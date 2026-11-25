@@ -1,0 +1,15 @@
+[package]
+name = "docx-xml-editor"
+version = "2.1.0"
+edition = "2021"
+rust-version = "1.88"
+license = "MIT"
+
+[dependencies]
+anyhow = "1"
+eframe = { version = "0.33", default-features = false, features = ["accesskit", "default_fonts", "glow", "x11", "wayland"] }
+rfd = "0.15"
+zip = { version = "2.4", default-features = false, features = ["deflate"] }
+roxmltree = "0.20"
+tempfile = "3"
+image = { version = "0.25", default-features = false, features = ["png"] }

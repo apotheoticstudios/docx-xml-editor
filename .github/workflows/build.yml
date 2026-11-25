@@ -1,0 +1,25 @@
+name: Build and test desktop app
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libx11-dev libxi-dev libgl1-mesa-dev libxrandr-dev libxcursor-dev libxinerama-dev libxkbcommon-dev libwayland-dev
+      - run: cargo test --locked
+      - run: cargo build --release --locked
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docx-xml-editor-${{ runner.os }}
+          path: |
+            target/release/docx-xml-editor
+            target/release/docx-xml-editor.exe

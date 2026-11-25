@@ -1,0 +1,6 @@
+/target/
+*.app/
+.DS_Store
+*.docx
+*.zip
+*.log
