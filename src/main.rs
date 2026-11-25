@@ -8,13 +8,16 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const INK: Color32 = Color32::from_rgb(26, 39, 58);
-const MUTED: Color32 = Color32::from_rgb(99, 113, 131);
-const TEAL: Color32 = Color32::from_rgb(0, 110, 116);
-const TEAL_PALE: Color32 = Color32::from_rgb(229, 244, 241);
-const NAVY: Color32 = Color32::from_rgb(17, 30, 49);
-const BORDER: Color32 = Color32::from_rgb(221, 228, 234);
-const RED: Color32 = Color32::from_rgb(169, 48, 49);
+const INK: Color32 = Color32::from_rgb(226, 234, 244);
+const MUTED: Color32 = Color32::from_rgb(155, 172, 192);
+const TEAL: Color32 = Color32::from_rgb(111, 225, 203);
+const BUTTON: Color32 = Color32::from_rgb(0, 106, 113);
+const SURFACE: Color32 = Color32::from_rgb(24, 34, 49);
+const BACKGROUND: Color32 = Color32::from_rgb(16, 24, 37);
+const TEAL_PALE: Color32 = Color32::from_rgb(30, 63, 66);
+const NAVY: Color32 = Color32::from_rgb(11, 18, 29);
+const BORDER: Color32 = Color32::from_rgb(49, 65, 84);
+const RED: Color32 = Color32::from_rgb(255, 143, 146);
 const FIELDS: [(&str, &str, &str); 8] = [
     ("Title", CORE, "title"),
     ("Subject", CORE, "subject"),
@@ -56,18 +59,18 @@ struct Editor {
 impl Editor {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         let mut style = egui::Style {
-            visuals: egui::Visuals::light(),
+            visuals: egui::Visuals::dark(),
             ..Default::default()
         };
         style.visuals.override_text_color = Some(INK);
-        style.visuals.panel_fill = Color32::from_rgb(244, 247, 249);
-        style.visuals.window_fill = Color32::WHITE;
-        style.visuals.extreme_bg_color = Color32::from_rgb(248, 250, 252);
-        style.visuals.faint_bg_color = Color32::from_rgb(238, 242, 246);
-        style.visuals.selection.bg_fill = Color32::from_rgb(181, 225, 220);
+        style.visuals.panel_fill = BACKGROUND;
+        style.visuals.window_fill = SURFACE;
+        style.visuals.extreme_bg_color = Color32::from_rgb(18, 28, 43);
+        style.visuals.faint_bg_color = Color32::from_rgb(31, 43, 60);
+        style.visuals.selection.bg_fill = Color32::from_rgb(34, 88, 89);
         style.visuals.selection.stroke = egui::Stroke::new(1.0_f32, TEAL);
-        style.visuals.widgets.inactive.bg_fill = Color32::WHITE;
-        style.visuals.widgets.inactive.weak_bg_fill = Color32::WHITE;
+        style.visuals.widgets.inactive.bg_fill = SURFACE;
+        style.visuals.widgets.inactive.weak_bg_fill = SURFACE;
         style.visuals.widgets.inactive.bg_stroke = egui::Stroke::new(1.0_f32, BORDER);
         style.visuals.widgets.inactive.corner_radius = 6.into();
         style.visuals.widgets.hovered.bg_fill = TEAL_PALE;
@@ -90,7 +93,10 @@ impl Editor {
         style
             .text_styles
             .insert(egui::TextStyle::Heading, FontId::proportional(23.));
+        cc.egui_ctx.set_theme(egui::Theme::Dark);
         cc.egui_ctx.set_style(style);
+        cc.egui_ctx
+            .send_viewport_cmd(egui::ViewportCommand::SetTheme(egui::SystemTheme::Dark));
         let logo = image::load_from_memory(include_bytes!("../assets/logo.png"))
             .ok()
             .map(|image| {
@@ -328,7 +334,7 @@ impl Editor {
         egui::TopBottomPanel::top("toolbar")
             .frame(
                 egui::Frame::new()
-                    .fill(Color32::WHITE)
+                    .fill(SURFACE)
                     .inner_margin(egui::Margin::symmetric(24, 16))
                     .stroke(egui::Stroke::new(1.0_f32, BORDER)),
             )
@@ -486,7 +492,7 @@ impl Editor {
                 }
                 ui.add_space(24.);
                 ui.label(
-                    RichText::new("LOCAL BY DESIGN")
+                    RichText::new("PROCESSING")
                         .size(10.)
                         .strong()
                         .color(Color32::from_rgb(134, 156, 182)),
@@ -686,8 +692,8 @@ impl Editor {
                 badge(
                     ui,
                     "Advanced",
-                    Color32::from_rgb(254, 241, 214),
-                    Color32::from_rgb(138, 91, 27),
+                    Color32::from_rgb(64, 49, 28),
+                    Color32::from_rgb(242, 194, 117),
                 );
             });
         });
@@ -702,7 +708,7 @@ impl Editor {
             ui.vertical(|ui| {
                 ui.set_width(238.);
                 egui::Frame::new()
-                    .fill(Color32::WHITE)
+                    .fill(SURFACE)
                     .corner_radius(10)
                     .stroke(egui::Stroke::new(1.0_f32, BORDER))
                     .inner_margin(14)
@@ -762,7 +768,7 @@ impl Editor {
             ui.vertical(|ui| {
                 ui.set_width(ui.available_width());
                 egui::Frame::new()
-                    .fill(Color32::WHITE)
+                    .fill(SURFACE)
                     .corner_radius(10)
                     .stroke(egui::Stroke::new(1.0_f32, BORDER))
                     .inner_margin(16)
@@ -940,13 +946,13 @@ impl Editor {
 // These small presentation helpers keep the screens visually consistent.
 fn primary(label: &str) -> egui::Button<'_> {
     egui::Button::new(RichText::new(label).color(Color32::WHITE).strong())
-        .fill(TEAL)
+        .fill(BUTTON)
         .stroke(egui::Stroke::NONE)
 }
 fn card(ui: &mut egui::Ui, id: &str, contents: impl FnOnce(&mut egui::Ui)) {
     ui.push_id(id, |ui| {
         egui::Frame::new()
-            .fill(Color32::WHITE)
+            .fill(SURFACE)
             .corner_radius(12)
             .stroke(egui::Stroke::new(1.0_f32, BORDER))
             .inner_margin(22)
@@ -1002,7 +1008,7 @@ impl eframe::App for Editor {
         egui::TopBottomPanel::bottom("status")
             .frame(
                 egui::Frame::new()
-                    .fill(Color32::WHITE)
+                    .fill(SURFACE)
                     .inner_margin(egui::Margin::symmetric(20, 9))
                     .stroke(egui::Stroke::new(1.0_f32, BORDER)),
             )
@@ -1016,7 +1022,7 @@ impl eframe::App for Editor {
         egui::CentralPanel::default()
             .frame(
                 egui::Frame::new()
-                    .fill(Color32::from_rgb(244, 247, 249))
+                    .fill(BACKGROUND)
                     .inner_margin(egui::Margin::symmetric(28, 24)),
             )
             .show(ctx, |ui| {
@@ -1089,4 +1095,65 @@ fn main() -> Result<()> {
         Box::new(|cc| Ok(Box::new(Editor::new(cc)))),
     )
     .map_err(|e| anyhow::anyhow!(e.to_string()))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn editor() -> Editor {
+        let mut editor = Editor {
+            package: Some(package::tests::fixture()),
+            checked: Some(BTreeMap::new()),
+            ..Default::default()
+        };
+        editor.load_fields().unwrap();
+        editor
+    }
+    #[test]
+    fn field_edits_update_dirty_and_validation_state() {
+        let mut editor = editor();
+        assert!(!editor.dirty());
+        assert!(editor.validated());
+        editor.fields[0] = "Edited title".into();
+        assert!(editor.dirty());
+        assert!(!editor.validated());
+        editor.commit().unwrap();
+        assert!(editor.dirty());
+        assert!(editor.validated());
+        editor.saved = editor.package.as_ref().unwrap().changes.clone();
+        assert!(!editor.dirty());
+    }
+    #[test]
+    fn invalid_field_does_not_partially_commit_other_edits() {
+        let mut editor = editor();
+        let original = editor
+            .package
+            .as_ref()
+            .unwrap()
+            .data(CORE)
+            .unwrap()
+            .to_vec();
+        editor.fields[0] = "Pending title".into();
+        editor.fields[7] = "1.5".into();
+        assert!(editor.commit().is_err());
+        assert_eq!(
+            editor.package.as_ref().unwrap().data(CORE).unwrap(),
+            original
+        );
+        assert!(editor.dirty());
+    }
+    #[test]
+    fn xml_edits_synchronize_back_to_properties() {
+        let mut editor = editor();
+        let mut changed = editor.package.as_ref().unwrap().clone();
+        changed
+            .set_property(CORE, "title", "Title from XML")
+            .unwrap();
+        editor.selected = Some(CORE.into());
+        editor.buffer = changed.text(CORE).unwrap().into();
+        assert!(editor.dirty());
+        editor.commit().unwrap();
+        assert_eq!(editor.fields[0], "Title from XML");
+        assert!(editor.validated());
+    }
 }

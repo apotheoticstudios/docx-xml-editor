@@ -10,6 +10,7 @@ Open a `.docx`, change its labelled properties or individual XML parts, then sav
 
 ## Features
 
+- Dark theme with charcoal panels, teal accents and readable light text.
 - Properties grouped into document details, people and editing statistics.
 - Editable title, subject, author, keywords, description, last editor, revision counter and editing time.
 - Editing time displayed in minutes and converted to hours for reference.
@@ -125,7 +126,7 @@ cargo test --locked
 
 `src/main.rs` contains the interface and edit-state handling. `src/package.rs` handles package loading, validation, XML-property edits, backups and verified saves.
 
-Regression tests cover XML escaping, namespace preservation, invalid XML, invalid counter values, broken relationships, unsafe paths, archive rebuilding and backup contents.
+Regression tests cover XML escaping, namespace preservation, invalid XML, invalid counter values, broken relationships, unsafe paths, archive rebuilding, backup contents, unsaved-change tracking, transactional property edits and XML-to-form synchronisation.
 
 The logo is included in `assets/`, along with its generation prompt. It was created using OpenAI’s image-generation tool. No network requests are required to load it.
 

@@ -378,9 +378,9 @@ fn percent_decode(value: &str) -> Result<String> {
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
-    fn fixture() -> Package {
+    pub(crate) fn fixture() -> Package {
         let parts = [
             ("[Content_Types].xml", "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"/>"),
             ("_rels/.rels", "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"document\" Target=\"word/document.xml\"/></Relationships>"),
